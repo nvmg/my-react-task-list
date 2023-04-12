@@ -1,11 +1,12 @@
 import React, {useState} from "react";
 
 export const Task = (props) =>{
-    const {name, onDelete} = props;
-    const [isChecked, setIsChecked] = useState(false);
+    const {name, onDelete, isCheckedTask, isCompleted} = props;
+    const [isChecked, setIsChecked] = useState(isCompleted);
     
     function handleCheckBoxChange(){
         setIsChecked(!isChecked);
+        isCheckedTask(isChecked,name);
     }
 
     const handleDeleteItem = ()=>{
