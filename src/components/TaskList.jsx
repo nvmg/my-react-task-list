@@ -1,23 +1,25 @@
-import { Task } from "./Task";
 import { useEffect, useState } from "react";
+import { Task } from "./Task";
 
 export const TaskList = (props) => {
-    const {list, onDeleteTask} = props;
+    const {list, onDeleteTask} = props
     const [completed, setCompleted] = useState([]);
 
-    const handleDelete = (nameTask) => {
+
+    const handleDelete = (nameTask) =>{
         const newList = completed.filter(item => nameTask !== item);
-        localStorage.setItem('completed', JSON.stringify(newList));
-        onDeleteTask(nameTask);
+        localStorage.setItem('completed',JSON.stringify(newList))
+        onDeleteTask(nameTask)
     }
 
     const handleChecked = (boolean,nameTask) =>{
-        let newCompleted = [...completed];
+
+        let newCompleted = [...completed]
 
         if(!completed.includes(nameTask) && !boolean){
-            newCompleted = [...newCompleted,nameTask];
+            newCompleted = [...newCompleted,nameTask]
         }else{
-            newCompleted = newCompleted.filter(task => nameTask != task);
+            newCompleted = newCompleted.filter(task => nameTask != task)
         }
 
         setCompleted(newCompleted)
@@ -33,15 +35,14 @@ export const TaskList = (props) => {
     },[])
 
     console.log(completed)
-
     return(
         <ul>
             {list.map((task)=>(
                 <Task name = {task.name} onDelete={handleDelete}
-                isCheckedTask = {handleChecked}
+                isTaskChecked = {handleChecked}
                 isCompleted = {completed.includes(task.name)}
                 />
             ))}
         </ul>
-    )
-}
+    );
+};
