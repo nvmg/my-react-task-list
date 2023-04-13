@@ -1,25 +1,29 @@
-import React, {useState} from "react";
+import { useState } from "react";
+import { useTaskList } from "../hooks/useTaskList";
 
-export const Task = (props) =>{
-    const {name, onDelete, isCheckedTask, isCompleted} = props;
-    const [isChecked, setIsChecked] = useState(isCompleted);
-    
-    function handleCheckBoxChange(){
-        setIsChecked(!isChecked);
-        isCheckedTask(isChecked,name);
+export const Task = (props)=>{
+    const {title, isPending, onDelete, onChangeState} = props;
+    const [isChecked, setIsChecked] = useState(isPending);
+
+    const handleDelete = ( ) => {
+        onDelete(title);
     }
 
-    const handleDeleteItem = ()=>{
-        onDelete(name);
+    const handleChangeState = () => {
+        const newIschecked = !isChecked;
+        setIsChecked(newIschecked);
+        onChangeState(title, newIschecked);
     }
 
     return(
         <li>
-        <article>
-        <input type="checkBox" checked={isChecked} onChange={handleCheckBoxChange}/>
-        <label htmlFor="myCheckBox" style={{textDecoration: isChecked ? "line-through": ''}}> {name} </label>
-        <button onClick={handleDeleteItem}>Delete</button>
-        </article>
+            <article>
+                <div>
+                    <input type="checkbox" checked={isChecked} onChange={handleChangeState} />
+                    <label id="{title}" style={isChecked ? { textDecoration: "line-through" } : {}}> {title} </label>
+                    <button style={{color: 'red'}} onClick={handleDelete}>Delete 🗑️</button>
+                </div>
+            </article>
         </li>
     )
 }

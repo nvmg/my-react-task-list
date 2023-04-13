@@ -1,47 +1,21 @@
 import { Task } from "./Task";
-import { useEffect, useState } from "react";
 
 export const TaskList = (props) => {
-    const {list, onDeleteTask} = props;
-    const [completed, setCompleted] = useState([]);
+    const { list,onDeleteOne, onChangeState} = props;
 
-    const handleDelete = (nameTask) => {
-        const newList = completed.filter(item => nameTask !== item);
-        localStorage.setItem('completed', JSON.stringify(newList));
-        onDeleteTask(nameTask);
+    const handleDeleteOne = (title) => {
+        onDeleteOne(title);
     }
 
-    const handleChecked = (boolean,nameTask) =>{
-        let newCompleted = [...completed];
-
-        if(!completed.includes(nameTask) && !boolean){
-            newCompleted = [...newCompleted,nameTask];
-        }else{
-            newCompleted = newCompleted.filter(task => nameTask != task);
-        }
-
-        setCompleted(newCompleted)
-        localStorage.setItem('completed',JSON.stringify(newCompleted));
+    const handleChangeState = (title, newIschecked) => {
+        onChangeState(title, newIschecked);
     }
-
-    useEffect(()=>{
-        const localStorageData = localStorage.getItem('completed');
-        const storedCompleted = JSON.parse(localStorageData);
-        if(storedCompleted!=null){
-            setCompleted(storedCompleted)
-        }
-    },[])
-
-    console.log(completed)
 
     return(
         <ul>
-            {list.map((task)=>(
-                <Task name = {task.name} onDelete={handleDelete}
-                isCheckedTask = {handleChecked}
-                isCompleted = {completed.includes(task.name)}
-                />
-            ))}
+            {list.map((task)=>{
+                return <Task key={task.title} title = {task.title} isPending = {task.isChecked} onDelete={handleDeleteOne} onChangeState={handleChangeState}/>;
+            })}
         </ul>
     )
 }
